@@ -6,6 +6,7 @@ body {
     padding: 0;
     overflow-x: hidden;
 }
+
 .container {
     width: 100%;
     height: 100vh;
@@ -16,16 +17,21 @@ body {
     flex-direction: column;
     align-items: center;
 }
+
 .search-bar {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
+    z-index: 10; /* Ensure search bar stays above other elements */
 }
+
 .scroll-container {
     display: flex;
     align-items: center;
     width: 90%;
+    position: relative; /* For proper positioning of loader */
 }
+
 .movie-container {
     display: flex;
     overflow-x: hidden;
@@ -36,6 +42,7 @@ body {
     box-sizing: border-box;
     position: relative;
 }
+
 .movie-tile {
     background: white;
     border: 1px solid #ddd;
@@ -43,92 +50,70 @@ body {
     padding: 10px;
     margin: 10px;
     width: 250px;
+    height: 450px; /* Fixed height for consistency */
     text-align: center;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     display: inline-block;
     flex: 0 0 auto;
     transition: transform 0.3s ease-in-out;
     cursor: pointer;
+    overflow: hidden; /* Prevent content overflow */
+    position: relative; /* For proper positioning of content */
 }
-.movie-tile p:first-of-type {  
+
+.movie-tile p {
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     display: block;
+    margin: 5px 0;
 }
+
+.movie-title {
+    font-weight: bold;
+    margin-top: 8px !important;
+}
+
 .movie-tile:hover {
     transform: scale(1.05);
 }
+
 .movie-tile img {
     width: 100%;
+    height: 300px; /* Fixed height for poster images */
+    object-fit: cover; /* Maintains aspect ratio while filling space */
+    object-position: center top; /* Focus on the top of posters */
     border-radius: 5px;
 }
-.scroll-btn {
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    cursor: pointer;
+
+/* Image placeholder styles */
+.placeholder {
+    width: 100%;
+    height: 300px;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    border-radius: 5px;
+}
+
+/* No image fallback styles */
+.no-image {
+    width: 100%;
+    height: 300px;
+    background-color: #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
     padding: 10px;
-    font-size: 20px;
-    margin: 10px;
-    display: none;
-}
-.scroll-btn:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
-.popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    z-index: 1000;
-    width: 60%;
-    max-width: 600px;
+    box-sizing: border-box;
 }
 
-.popup.show {
-    display: block;
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-}
-
-.movie-details {
-    margin-top: 10px;
-    text-align: center;
-}
-
-.close-btn {
-    cursor: pointer;
-    font-size: 24px;
-    position: absolute;
-    top: 10px;
-    right: 15px;
-}
-
-
-
-.mini-loader {
-    width: 30px;
-    height: 30px;
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #3498db;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: auto;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
+/* Loader styles */
 .loader {
     border: 5px solid #f3f3f3;
     border-top: 5px solid #3498db;
@@ -149,7 +134,93 @@ body {
     100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-.scroll-container {
+/* Scroll button styles */
+.scroll-btn {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    z-index: 5;
+}
+
+.scroll-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Popup styles */
+#trailerPopup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+#trailerPopup.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-content {
+    background-color: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 1000px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
-    min-height: 200px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+#trailerFrame {
+    width: 100%;
+    height: 400px;
+    border: none;
+    margin-bottom: 20px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .movie-tile {
+        width: 180px;
+        height: 400px;
+    }
+    
+    .movie-tile img {
+        height: 250px;
+    }
+    
+    .placeholder, .no-image {
+        height: 250px;
+    }
+    
+    #trailerFrame {
+        height: 300px;
+    }
 }
