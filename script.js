@@ -76,10 +76,10 @@ async function searchMovies(query, year, page, append) {
                 // Add a placeholder while the image loads
                 movieElement.innerHTML = `
                     <div class="placeholder">Loading...</div>
-                    <p class="movie-title"><strong>${movie.Title}</strong></p>
+                    <p1 class="movie-title"><strong>${movie.Title}</strong></p>
                     <p>(${movie.Year})</p>
-                    <p>Genre: ${movie.Genre || "N/A"}</p>
-                    <p>IMDB Rating: ${movie.imdbRating || "N/A"}</p>
+                    <p>Type: ${movie.Type || "N/A"}</p>
+                   
                 `;
 
                 // Create and load the image
@@ -91,17 +91,17 @@ async function searchMovies(query, year, page, append) {
                         <img src="${movie.Poster}" alt="${movie.Title}">
                         <p class="movie-title"><strong>${movie.Title}</strong></p>
                         <p>(${movie.Year})</p>
-                        <p>Genre: ${movie.Genre || "N/A"}</p>
-                        <p>IMDB Rating: ${movie.imdbRating || "N/A"}</p>
+                        <p>Type: ${movie.Type || "N/A"}</p>
+                       
                     `;
                 };
                 img.onerror = function() {
                     movieElement.innerHTML = `
+                        <img src = "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg">
                         <p class="movie-title"><strong>${movie.Title}</strong></p>
                         <p>(${movie.Year})</p>
-                        <p>Genre: ${movie.Genre || "N/A"}</p>
-                        <p>IMDB Rating: ${movie.imdbRating || "N/A"}</p>
-                        <p style="color:red;">Image Not Available</p>
+                        <p>Type: ${movie.Type || "N/A"}</p>
+                     
                     `;
                 };
 
@@ -151,7 +151,12 @@ function scrollRight() {
         
         if (currentPage < totalPages && lastQuery) {
             currentPage++;
-            searchMovies(lastQuery, lastYear, currentPage, true);
+            searchMovies(lastQuery, lastYear, currentPage, true).then(() => {
+                // Scroll one step to the right after new movies are loaded
+                setTimeout(() => {
+                    container.scrollLeft += 300;
+                }, 100); // Small delay ensures movies are added first
+            });
         } else if (currentPage >= totalPages) {
             // If no more pages, wrap back to start (your original behavior)
             container.scrollLeft = 0;
@@ -217,3 +222,39 @@ function closePopup() {
         document.getElementById("trailerFrame").src = "";
     }, 300);
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("keydown", function (event) {
+        const scrollContainer = document.getElementById("movieResults");
+        const activeMovie = document.activeElement; // Focused element
+        const popup = document.getElementById("trailerPopup");
+
+        // Prevent Enter key from causing default scrolling
+        if (event.key === "Enter") {
+            event.preventDefault();
+        }
+
+        // Left Arrow Key: Scroll Left
+        if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            scrollContainer.scrollBy({ left: -250, behavior: "smooth" });
+        }
+
+        // Right Arrow Key: Scroll Right
+        else if (event.key === "ArrowRight") {
+            event.preventDefault();
+            scrollContainer.scrollBy({ left: 250, behavior: "smooth" });
+        }
+
+        // Enter Key: Open Popup if a movie is focused
+        else if (event.key === "Enter" && activeMovie.classList.contains("movie-tile")) {
+            event.preventDefault();
+        }
+
+        // Escape Key: Close Popup
+        else if (event.key === "Escape" && popup.classList.contains("show")) {
+            event.preventDefault();
+            closePopup();
+        }
+    });
+});
