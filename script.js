@@ -333,6 +333,10 @@ document.getElementById("searchButton").addEventListener("click", function() {
                 <p>${movie.Title} (${movie.Year})</p>
                 <p><strong>Type:</strong> ${movie.Type}</p>
             `;
+            movieElement.addEventListener("click",  function() {
+                openPopup("https://www.youtube.com/embed/zSWdZVtXT7E?autoplay=1", movie);
+            });
+           
             results.appendChild(movieElement);
         });
     }
@@ -354,4 +358,30 @@ function scrollRight() {
     if (container.scrollLeft + container.clientWidth >= container.scrollWidth) {
         container.scrollLeft = 0;
     }
+}
+
+
+function openPopup(trailerUrl, movieData) {
+    const popup = document.getElementById("trailerPopup");
+    document.getElementById("trailerFrame").src = trailerUrl;
+    popup.classList.add("show");
+
+    const movieDetails = document.getElementById("movieDetails");
+    movieDetails.innerHTML = `
+        <h3>${movieData.Title} (${movieData.Year})</h3>
+        <p><strong>Genre:</strong> ${movieData.Genre}</p>
+        <p><strong>Director:</strong> ${movieData.Director}</p>
+        <p><strong>Actors:</strong> ${movieData.Actors}</p>
+        <p><strong>Plot:</strong> ${movieData.Plot}</p>
+        <p><strong>IMDB Rating:</strong> ${movieData.imdbRating}</p>
+    `;
+}
+
+
+function closePopup() {
+    const popup = document.getElementById("trailerPopup");
+    popup.classList.remove("show");
+    setTimeout(() => {
+        document.getElementById("trailerFrame").src = "";
+    }, 300);
 }
