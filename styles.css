@@ -50,6 +50,13 @@ body {
     transition: transform 0.3s ease-in-out;
     cursor: pointer;
 }
+.movie-tile p:first-of-type {  
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+}
 .movie-tile:hover {
     transform: scale(1.05);
 }
