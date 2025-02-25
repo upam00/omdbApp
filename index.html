@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Movie Search</h1>
+        <div class="search-bar">
+            <input type="text" id="searchBox" placeholder="Search for a movie...">
+            <select id="yearSelect">
+                <option value="">All Years</option>
+            </select>
+            <button id="searchButton">Search</button>
+        </div>
+        
+        <div class="scroll-container" id="scrollContainer" style="display: none;">
+            <button class="scroll-btn left" onclick="scLeft()">&#10094;</button>
+            <div id="movieResults" class="movie-container"></div>
+            <button class="scroll-btn right" onclick="scrollRight()">&#10095;</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

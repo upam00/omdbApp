@@ -1,0 +1,71 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+.container {
+    width: 100%;
+    height: 100vh;
+    background: white;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.scroll-container {
+    display: flex;
+    align-items: center;
+    width: 90%;
+}
+.movie-container {
+    display: flex;
+    overflow-x: hidden;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    width: 80%;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+}
+.movie-tile {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+    flex: 0 0 auto;
+    transition: transform 0.3s ease-in-out;
+}
+.movie-tile:hover {
+    transform: scale(1.05);
+}
+.movie-tile img {
+    width: 100%;
+    border-radius: 5px;
+}
+.scroll-btn {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 20px;
+    margin: 10px;
+    display: none;
+}
+.scroll-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
